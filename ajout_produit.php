@@ -13,7 +13,6 @@ try {
   exit;
 }
 
-//récupérer les stagiaires
 $pdoStatement = $connexion->prepare("select * from Categorie");
 $pdoStatement->setFetchMode(PDO::FETCH_ASSOC); //tableau associatif
 $pdoStatement->execute();
@@ -34,7 +33,7 @@ $categories = $pdoStatement->fetchAll();
   </div>
   <div class="form-group">
     <label for="prixht">Prix HT €</label>
-    <input class="form-control" type="number" id="prixht" name="prixht" >
+    <input class="form-control" type="text" id="prixht" name="prixht" >
   </div>
   <div class="form-group">
     <label for="stock">Stock</label>

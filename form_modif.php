@@ -14,10 +14,19 @@ try {
 }
 
 $id = $_GET["id"];
-$pdoStatement = $connexion->prepare("select * from Produit where id=:id");
+if (!$id){
+  header("location:liste_produit.php");
+  exit;
+}
+$pdoStatement = $connexion->prepare("select p.*, c.nom as categorie_nom from Produit p inner join Categorie c on p.categorie_id = c.id where p.id=:id");
 $pdoStatement->setFetchMode(PDO::FETCH_ASSOC); //tableau associatif
 $pdoStatement->execute( array('id' => $id) );
 $produits = $pdoStatement->fetch();
+
+$pdoStat = $connexion->prepare("select * from Categorie");
+$pdoStat->setFetchMode(PDO::FETCH_ASSOC); //tableau associatif
+$pdoStat->execute();
+$categories = $pdoStat->fetchAll();
 
 
 ?>
@@ -36,7 +45,7 @@ $produits = $pdoStatement->fetch();
   </div>
   <div class="form-group">
     <label for="prixht">Prix HT €</label>
-    <input class="form-control" type="number" id="prixht" name="prixht" value="<?php echo $produits["prixHT"]; ?>">
+    <input class="form-control" type="text" id="prixht" name="prixht" value="<?php echo $produits["prixHT"]; ?>">
   </div>
   <div class="form-group">
     <label for="stock">Stock</label>
@@ -45,13 +54,19 @@ $produits = $pdoStatement->fetch();
   <div class="form-group">
     <label for="centre">Catégorie</label>
     <select class="form-control" name="categorie" id="categorie">
-      <?php foreach ($categories as $c) : ?>
-        <option value="<?php echo $c["id"]; ?>"><?php echo $c["nom"]; ?></option>
+    <?php foreach ($categories as $c) : ?>
+        <?php $selected = $c["id"] == $produits["categorie_id"];
+        ?>
+        <option 
+          value="<?php echo $c["id"]; ?>" 
+          <?php if ($selected) echo "selected";?>>
+        <?php echo $c["nom"]; ?></option>
       <?php endforeach; ?>
     </select>
   </div>
+  <div><input type="hidden" name="id" value="<?php echo $id; ?>"></div>
   <div>
-    <input class="btn btn-primary" type="submit" value="Ajouter un produit">
+    <input class="btn btn-primary" type="submit" value="Modifier le produit" >
   </div>
 </form>
 

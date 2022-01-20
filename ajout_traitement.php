@@ -24,8 +24,9 @@ if (!$valide && strlen($valide) < 13){
     $erreurs["isbn"] = "prenom est invalide";
 }
 
-
-if ($prixht < 0) {
+$numb = "/^[0-9]*$/";
+$valide = preg_match($numb, $prixht);
+if ($valide < 0) {
     $erreurs["prixht"] = "prix invalide";
 }
 
