@@ -55,7 +55,7 @@ if(count($erreurs)<0){
     require "db/connexion.php";
     try {
         $connexion = new Connexion();
-        $sql = "UPDATE Produit set nom=:nom, isbn=:isbn, prixHT=:prixht, stock=:stock, categorie=:categorie WHERE id=:id;";
+        $sql = "UPDATE Produit set nom=:nom, isbn=:isbn, prixHT=:prixht, stock=:stock, categorie_id=:categorie WHERE id=:id;";
         $pdoStatement = $connexion->prepare($sql);
         $tab = [":nom"=>$nom, ":isbn"=>$isbn, ":categorie"=>$categorie, ":stock"=>$stock, ":prixht"=>$prixht, ":id"=>$id];
         $pdoStatement->execute($tab);
